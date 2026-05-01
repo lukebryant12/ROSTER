@@ -520,44 +520,58 @@ function rosterCell(house, shift, dayIndex) {
   const key = cellKey(house, shift, dayIndex);
   const weekClass = dayIndex === 7 ? 'week-break' : '';
 
+  const autoStatus = cell.staff && cell.staff.trim() ? 'Covered' : 'Vacant';
+  cell.status = autoStatus;
+
   return `
     <td class="${weekClass}">
       <div class="cell-box">
-        <select onchange="updateCell('${key}', 'staff', this.value); renderRoster();">
-          <option value="">Select staff</option>
+        <select
+          class="${autoStatus === 'Covered' ? 'status-covered' : 'status-vacant'}"
+          onchange="updateCell('${key}', 'staff', this.value); renderRoster();"
+        >
+          <option value="">Vacant - Select staff</option>
           ${employeeNames.map(name => `
             <option value="${name}" ${cell.staff === name ? 'selected' : ''}>${name}</option>
           `).join('')}
         </select>
 
-        <select class="${statusClass(cell.status)}" onchange="updateCell('${key}', 'status', this.value); renderRoster();">
-          <option ${cell.status === 'Vacant' ? 'selected' : ''}>Vacant</option>
-          <option ${cell.status === 'Pending' ? 'selected' : ''}>Pending</option>
-          <option ${cell.status === 'Covered' ? 'selected' : ''}>Covered</option>
-        </select>
-
-        <input value="${cell.notes}" placeholder="Notes" onchange="updateCell('${key}', 'notes', this.value)" />
+        <input
+          value="${cell.notes}"
+          placeholder="Notes"
+          onchange="updateCell('${key}', 'notes', this.value)"
+        />
       </div>
     </td>
   `;
 }
 
 function quickFillStaff(key) {
-  const staff = document.getElementById('quickStaff').value.trim();
+  const staff = document.getElementById('quickStaff').value;
+
   if (!staff) return;
-  if (!rosterData[key]) rosterData[key] = { staff: '', status: 'Vacant', notes: '' };
+
+  if (!rosterData[key]) {
+    rosterData[key] = { staff: '', status: 'Vacant', notes: '' };
+  }
+
   rosterData[key].staff = staff;
   rosterData[key].status = 'Covered';
+
   saveRoster();
   renderRoster();
 }
 
 function updateCell(key, field, value) {
-  if (!rosterData[key]) rosterData[key] = { staff: '', status: 'Vacant', notes: '' };
+  if (!rosterData[key]) {
+    rosterData[key] = { staff: '', status: 'Vacant', notes: '' };
+  }
+
   rosterData[key][field] = value;
 
-  if (field === 'staff' && value.trim()) rosterData[key].status = 'Covered';
-  if (field === 'staff' && !value.trim()) rosterData[key].status = 'Vacant';
+  if (field === 'staff') {
+    rosterData[key].status = value && value.trim() ? 'Covered' : 'Vacant';
+  }
 
   saveRoster();
 }
@@ -571,7 +585,7 @@ function renderCoverList() {
     house.shifts.forEach(shift => {
       fortnightDays.forEach(day => {
         const cell = getCell(house.name, shift.id, day.index);
-        if (cell.status === 'Vacant' || !cell.staff.trim()) {
+        if (!cell.staff || !cell.staff.trim()) {
           items.push({
             house: house.name,
             week: day.week,
