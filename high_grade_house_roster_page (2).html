@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fortnightly House Roster</title>
+
   <style>
     :root {
       --bg: #f4f7fb;
@@ -41,10 +42,9 @@
     header h1 {
       margin: 0 0 8px;
       font-size: 34px;
-      letter-spacing: -0.5px;
     }
 
-    header p { margin: 0; opacity: 0.9; font-size: 16px; }
+    header p { margin: 0; opacity: 0.9; }
 
     .container {
       max-width: 1900px;
@@ -87,19 +87,15 @@
       color: white;
       font-weight: 700;
       cursor: pointer;
-      transition: 0.2s ease;
-      white-space: nowrap;
     }
 
-    button:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    button:hover { background: var(--primary-dark); }
 
     .secondary-btn {
       background: #eef2ff;
       color: var(--primary-dark);
       border: 1px solid #c7d2fe;
     }
-
-    .secondary-btn:hover { background: #dbeafe; color: var(--primary-dark); }
 
     .tabs {
       display: flex;
@@ -127,17 +123,11 @@
       background: var(--card);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      border: 1px solid #edf2f7;
       padding: 18px;
       margin-bottom: 22px;
     }
 
     .cover-panel.active { display: block; }
-
-    .cover-panel h2 {
-      margin: 0 0 12px;
-      font-size: 22px;
-    }
 
     .cover-list {
       display: grid;
@@ -153,7 +143,7 @@
     }
 
     .cover-item strong { display: block; margin-bottom: 4px; }
-    .cover-item span { display: block; color: var(--muted); font-size: 13px; margin-bottom: 3px; }
+    .cover-item span { display: block; color: var(--muted); font-size: 13px; }
 
     .empty-cover {
       padding: 16px;
@@ -175,7 +165,6 @@
       border-radius: var(--radius);
       padding: 18px;
       box-shadow: var(--shadow);
-      border: 1px solid #edf2f7;
     }
 
     .stat-card span {
@@ -193,20 +182,17 @@
       border-radius: 22px;
       box-shadow: var(--shadow);
       overflow: hidden;
-      border: 1px solid #edf2f7;
       margin-bottom: 24px;
     }
 
     .house-header {
       padding: 18px 20px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
       color: white;
     }
 
-    .house-header h2 { margin: 0; font-size: 22px; }
-    .house-header small { opacity: 0.88; font-weight: 700; }
+    .house-header h2 { margin: 0; }
 
     .tussock { background: linear-gradient(135deg, #047857, #10b981); }
     .silverglade { background: linear-gradient(135deg, #475569, #94a3b8); }
@@ -235,13 +221,10 @@
       color: #475569;
       font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
       text-align: center;
     }
 
-    .week-break {
-      border-left: 4px solid #2563eb;
-    }
+    .week-break { border-left: 4px solid #2563eb; }
 
     th:first-child, td:first-child {
       position: sticky;
@@ -252,7 +235,7 @@
       font-weight: 700;
     }
 
-    th:first-child { background: #f8fafc; z-index: 3; }
+    th:first-child { background: #f8fafc; }
 
     .shift-name {
       display: block;
@@ -299,7 +282,7 @@
       flex-wrap: wrap;
     }
 
-    .actions button { width: auto; padding: 10px 14px; font-size: 14px; }
+    .actions button { width: auto; }
 
     .footer-note {
       margin-top: 18px;
@@ -308,26 +291,16 @@
       text-align: center;
     }
 
-    @media print {
-      header, .toolbar, .tabs, .stats, .actions, .footer-note, .cover-panel { display: none; }
-      body { background: white; }
-      .container { margin: 0; padding: 0; max-width: none; }
-      .house-card { box-shadow: none; page-break-inside: avoid; margin-bottom: 18px; }
-      table { min-width: 100%; font-size: 9px; }
-      th, td { padding: 4px; }
-      input, select { border: none; padding: 2px; font-size: 9px; }
-      .cell-box { min-width: 90px; gap: 2px; }
-    }
-
     @media (max-width: 1050px) {
       .toolbar, .stats { grid-template-columns: 1fr; }
     }
   </style>
 </head>
+
 <body>
   <header>
     <h1>Fortnightly House Roster</h1>
-    <p>Two-week roster by house, day and shift. Add staff names, status and notes for each shift.</p>
+    <p>Two-week roster by house, day and shift.</p>
   </header>
 
   <main class="container">
@@ -336,6 +309,7 @@
         <label for="fortnightStart">Fortnight Starting</label>
         <input id="fortnightStart" type="date" onchange="setFortnightStart(this.value)" />
       </div>
+
       <div>
         <label for="houseFilter">View House</label>
         <select id="houseFilter" onchange="renderRoster()">
@@ -347,10 +321,14 @@
           <option value="159B Gilston">159B Gilston</option>
         </select>
       </div>
+
       <div>
         <label for="quickStaff">Quick Staff Name</label>
-        <input id="quickStaff" type="text" placeholder="Type staff name before clicking a cell" />
+        <select id="quickStaff">
+          <option value="">Select staff name</option>
+        </select>
       </div>
+
       <button onclick="window.print()">Print / Save PDF</button>
       <button class="secondary-btn" onclick="clearRoster()">Clear Fortnight</button>
     </section>
@@ -366,32 +344,21 @@
     </section>
 
     <section class="stats" id="statsPanel">
-      <div class="stat-card">
-        <span>Total Houses</span>
-        <strong>5</strong>
-      </div>
-      <div class="stat-card">
-        <span>Days Displayed</span>
-        <strong>14</strong>
-      </div>
-      <div class="stat-card">
-        <span>Standard Shifts</span>
-        <strong>Day + Sleepover</strong>
-      </div>
-      <div class="stat-card">
-        <span>159B Extra Short Shifts</span>
-        <strong>AM + PM</strong>
-      </div>
+      <div class="stat-card"><span>Total Houses</span><strong>5</strong></div>
+      <div class="stat-card"><span>Days Displayed</span><strong>14</strong></div>
+      <div class="stat-card"><span>Standard Shifts</span><strong>Day + Sleepover</strong></div>
+      <div class="stat-card"><span>159B Extra Short Shifts</span><strong>AM + PM</strong></div>
     </section>
 
     <section id="rosterArea"></section>
 
-    <p class="footer-note">Tip: Enter staff directly into each cell. Your fortnightly roster saves automatically in this browser.</p>
+    <p class="footer-note">Tip: Select staff directly in each cell. Your roster saves automatically in this browser.</p>
   </main>
 
-  <script>
-    const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const employeeNames = [
+<script>
+const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+const employeeNames = [
   "Kylie Holloway",
   "Luke Bryant",
   "Tayla Holloway",
@@ -420,311 +387,313 @@
   "Nicole Mayo",
   "Alyssa Jesperson"
 ];
-    const fortnightDays = Array.from({ length: 14 }, (_, index) => ({
-      index,
-      week: index < 7 ? 'Week 1' : 'Week 2',
-      day: dayNames[index % 7]
-    }));
 
-    const houses = [
-      { name: 'Tussock', className: 'tussock', shifts: standardShifts() },
-      { name: 'Silverglade', className: 'silverglade', shifts: standardShifts() },
-      { name: 'Currant', className: 'currant', shifts: standardShifts() },
-      { name: '159A Gilston', className: 'gilston-a', shifts: standardShifts() },
-      {
-        name: '159B Gilston',
-        className: 'gilston-b',
-        shifts: [
-          ...standardShifts(),
-          { id: 'shortAM', label: 'Short AM', time: '7:30am - 10:30am', timeClass: 'short-time' },
-          { id: 'shortPM', label: 'Short PM', time: '4:30pm - 7:30pm', timeClass: 'short-time' }
-        ]
-      }
-    ];
+const fortnightDays = Array.from({ length: 14 }, (_, index) => ({
+  index,
+  week: index < 7 ? 'Week 1' : 'Week 2',
+  day: dayNames[index % 7]
+}));
 
-    let rosterData = {};
-    let fortnightStart = getMondayDate(new Date());
+const houses = [
+  { name: 'Tussock', className: 'tussock', shifts: standardShifts() },
+  { name: 'Silverglade', className: 'silverglade', shifts: standardShifts() },
+  { name: 'Currant', className: 'currant', shifts: standardShifts() },
+  { name: '159A Gilston', className: 'gilston-a', shifts: standardShifts() },
+  {
+    name: '159B Gilston',
+    className: 'gilston-b',
+    shifts: [
+      ...standardShifts(),
+      { id: 'shortAM', label: 'Short AM', time: '7:30am - 10:30am', timeClass: 'short-time' },
+      { id: 'shortPM', label: 'Short PM', time: '4:30pm - 7:30pm', timeClass: 'short-time' }
+    ]
+  }
+];
 
-    function standardShifts() {
-      return [
-        { id: 'day', label: 'Day Shift', time: '7:15am - 3:15pm', timeClass: 'day-time' },
-        { id: 'sleepover', label: 'Afternoon / Sleepover', time: '3:15pm - 7:15am', timeClass: 'night-time' }
-      ];
-    }
+let rosterData = {};
+let fortnightStart = getMondayDate(new Date());
 
-    function getMondayDate(date) {
-      const d = new Date(date);
-      const day = d.getDay();
-      const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-      d.setDate(diff);
-      return d.toISOString().split('T')[0];
-    }
+function standardShifts() {
+  return [
+    { id: 'day', label: 'Day Shift', time: '7:15am - 3:15pm', timeClass: 'day-time' },
+    { id: 'sleepover', label: 'Afternoon / Sleepover', time: '3:15pm - 7:15am', timeClass: 'night-time' }
+  ];
+}
 
-    function getDateForDay(index) {
-      const d = new Date(fortnightStart);
-      d.setDate(d.getDate() + index);
-      return d.toLocaleDateString('en-AU', { day: '2-digit', month: '2-digit' });
-    }
+function loadEmployeeDropdowns() {
+  const quickStaff = document.getElementById('quickStaff');
+  quickStaff.innerHTML = '<option value="">Select staff name</option>';
 
-    function cellKey(house, shift, dayIndex) {
-      return `${fortnightStart}_${house}_${shift}_${dayIndex}`;
-    }
+  employeeNames.forEach(name => {
+    quickStaff.innerHTML += `<option value="${name}">${name}</option>`;
+  });
+}
 
-    function getCell(house, shift, dayIndex) {
-      const key = cellKey(house, shift, dayIndex);
-      if (!rosterData[key]) {
-        rosterData[key] = { staff: '', status: 'Vacant', notes: '' };
-      }
-      return rosterData[key];
-    }
+function getMondayDate(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff);
+  return d.toISOString().split('T')[0];
+}
 
-    function setFortnightStart(value) {
-      fortnightStart = value;
-      saveRoster();
-      renderRoster();
-    }
+function getDateForDay(index) {
+  const d = new Date(fortnightStart);
+  d.setDate(d.getDate() + index);
+  return d.toLocaleDateString('en-AU', { day: '2-digit', month: '2-digit' });
+}
 
-    function statusClass(status) {
-      if (status === 'Covered') return 'status-covered';
-      if (status === 'Pending') return 'status-pending';
-      return 'status-vacant';
-    }
+function cellKey(house, shift, dayIndex) {
+  return `${fortnightStart}_${house}_${shift}_${dayIndex}`;
+}
 
-    function renderRoster() {
-      document.getElementById('fortnightStart').value = fortnightStart;
-      renderCoverList();
-      const filter = document.getElementById('houseFilter').value;
-      const rosterArea = document.getElementById('rosterArea');
-      const visibleHouses = filter === 'All' ? houses : houses.filter(h => h.name === filter);
+function getCell(house, shift, dayIndex) {
+  const key = cellKey(house, shift, dayIndex);
+  if (!rosterData[key]) rosterData[key] = { staff: '', status: 'Vacant', notes: '' };
+  return rosterData[key];
+}
 
-      rosterArea.innerHTML = visibleHouses.map(house => `
-        <article class="house-card">
-          <div class="house-header ${house.className}">
-            <div>
-              <h2>${house.name}</h2>
-              <small>Fortnight commencing ${formatFortnightStart()}</small>
-            </div>
-            <small>${house.shifts.length} shifts per day</small>
-          </div>
+function setFortnightStart(value) {
+  fortnightStart = value;
+  saveRoster();
+  renderRoster();
+}
 
-          <div class="roster-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Shift</th>
-                  ${fortnightDays.map(day => `<th class="${day.index === 7 ? 'week-break' : ''}">${day.week}<br>${day.day}<br>${getDateForDay(day.index)}</th>`).join('')}
-                </tr>
-              </thead>
-              <tbody>
-                ${house.shifts.map(shift => `
-                  <tr>
-                    <td>
-                      <span class="shift-name">${shift.label}</span>
-                      <span class="shift-time ${shift.timeClass}">${shift.time}</span>
-                    </td>
-                    ${fortnightDays.map(day => rosterCell(house.name, shift.id, day.index)).join('')}
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
+function statusClass(status) {
+  if (status === 'Covered') return 'status-covered';
+  if (status === 'Pending') return 'status-pending';
+  return 'status-vacant';
+}
 
-          <div class="actions">
-            <button class="secondary-btn" onclick="copyWeekOneToWeekTwo('${house.name}')">Copy Week 1 to Week 2</button>
-            <button class="secondary-btn" onclick="copyMondayToFortnight('${house.name}')">Copy First Monday Across Fortnight</button>
-            <button class="secondary-btn" onclick="clearHouse('${house.name}')">Clear ${house.name}</button>
-            <button onclick="window.print()">Print / Save PDF</button>
-          </div>
-        </article>
-      `).join('');
-    }
+function renderRoster() {
+  document.getElementById('fortnightStart').value = fortnightStart;
+  renderCoverList();
 
-    function renderCoverList() {
-      const coverList = document.getElementById('coverList');
-      const coverCount = document.getElementById('coverCount');
-      const items = [];
+  const filter = document.getElementById('houseFilter').value;
+  const rosterArea = document.getElementById('rosterArea');
+  const visibleHouses = filter === 'All' ? houses : houses.filter(h => h.name === filter);
 
-      houses.forEach(house => {
-        house.shifts.forEach(shift => {
-          fortnightDays.forEach(day => {
-            const cell = getCell(house.name, shift.id, day.index);
-            if (cell.status === 'Vacant' || !cell.staff.trim()) {
-              items.push({
-                house: house.name,
-                week: day.week,
-                day: day.day,
-                date: getDateForDay(day.index),
-                shift: shift.label,
-                time: shift.time,
-                status: cell.status
-              });
-            }
-          });
-        });
-      });
-
-      coverCount.textContent = items.length;
-
-      if (!items.length) {
-        coverList.innerHTML = '<div class="empty-cover">All shifts are currently covered.</div>';
-        return;
-      }
-
-      coverList.innerHTML = items.map(item => `
-        <div class="cover-item">
-          <strong>${item.house}</strong>
-          <span>${item.week} — ${item.day} ${item.date}</span>
-          <span>${item.shift}: ${item.time}</span>
-          <span>Status: ${item.status}</span>
+  rosterArea.innerHTML = visibleHouses.map(house => `
+    <article class="house-card">
+      <div class="house-header ${house.className}">
+        <div>
+          <h2>${house.name}</h2>
+          <small>Fortnight commencing ${formatFortnightStart()}</small>
         </div>
-      `).join('');
-    }
+        <small>${house.shifts.length} shifts per day</small>
+      </div>
 
-    function showTab(tab) {
-      const rosterArea = document.getElementById('rosterArea');
-      const statsPanel = document.getElementById('statsPanel');
-      const coverPanel = document.getElementById('coverPanel');
-      const rosterTab = document.getElementById('rosterTab');
-      const coverTab = document.getElementById('coverTab');
+      <div class="roster-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Shift</th>
+              ${fortnightDays.map(day => `<th class="${day.index === 7 ? 'week-break' : ''}">${day.week}<br>${day.day}<br>${getDateForDay(day.index)}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${house.shifts.map(shift => `
+              <tr>
+                <td>
+                  <span class="shift-name">${shift.label}</span>
+                  <span class="shift-time ${shift.timeClass}">${shift.time}</span>
+                </td>
+                ${fortnightDays.map(day => rosterCell(house.name, shift.id, day.index)).join('')}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
 
-      if (tab === 'cover') {
-        rosterArea.style.display = 'none';
-        statsPanel.style.display = 'none';
-        coverPanel.classList.add('active');
-        coverTab.classList.add('active');
-        rosterTab.classList.remove('active');
-      } else {
-        rosterArea.style.display = 'block';
-        statsPanel.style.display = 'grid';
-        coverPanel.classList.remove('active');
-        rosterTab.classList.add('active');
-        coverTab.classList.remove('active');
-      }
-    }
+      <div class="actions">
+        <button class="secondary-btn" onclick="copyWeekOneToWeekTwo('${house.name}')">Copy Week 1 to Week 2</button>
+        <button class="secondary-btn" onclick="copyMondayToFortnight('${house.name}')">Copy First Monday Across Fortnight</button>
+        <button class="secondary-btn" onclick="clearHouse('${house.name}')">Clear ${house.name}</button>
+        <button onclick="window.print()">Print / Save PDF</button>
+      </div>
+    </article>
+  `).join('');
+}
 
-    function rosterCell(house, shift, dayIndex) {
-      const cell = getCell(house, shift, dayIndex);
-      const key = cellKey(house, shift, dayIndex);
-      const weekClass = dayIndex === 7 ? 'week-break' : '';
+function rosterCell(house, shift, dayIndex) {
+  const cell = getCell(house, shift, dayIndex);
+  const key = cellKey(house, shift, dayIndex);
+  const weekClass = dayIndex === 7 ? 'week-break' : '';
 
-      return `
-        <td class="${weekClass}">
-          <div class="cell-box">
-            <input
-              value="${cell.staff}"
-              placeholder="Staff name"
-              onclick="quickFillStaff('${key}')"
-              onchange="updateCell('${key}', 'staff', this.value)"
-            />
-            <select class="${statusClass(cell.status)}" onchange="updateCell('${key}', 'status', this.value); renderRoster();">
-              <option ${cell.status === 'Vacant' ? 'selected' : ''}>Vacant</option>
-              <option ${cell.status === 'Pending' ? 'selected' : ''}>Pending</option>
-              <option ${cell.status === 'Covered' ? 'selected' : ''}>Covered</option>
-            </select>
-            <input
-              value="${cell.notes}"
-              placeholder="Notes"
-              onchange="updateCell('${key}', 'notes', this.value)"
-            />
-          </div>
-        </td>
-      `;
-    }
+  return `
+    <td class="${weekClass}">
+      <div class="cell-box">
+        <select onchange="updateCell('${key}', 'staff', this.value); renderRoster();">
+          <option value="">Select staff</option>
+          ${employeeNames.map(name => `
+            <option value="${name}" ${cell.staff === name ? 'selected' : ''}>${name}</option>
+          `).join('')}
+        </select>
 
-    function quickFillStaff(key) {
-      const staff = document.getElementById('quickStaff').value.trim();
-      if (!staff) return;
-      if (!rosterData[key]) rosterData[key] = { staff: '', status: 'Vacant', notes: '' };
-      rosterData[key].staff = staff;
-      rosterData[key].status = 'Covered';
-      saveRoster();
-      renderRoster();
-    }
+        <select class="${statusClass(cell.status)}" onchange="updateCell('${key}', 'status', this.value); renderRoster();">
+          <option ${cell.status === 'Vacant' ? 'selected' : ''}>Vacant</option>
+          <option ${cell.status === 'Pending' ? 'selected' : ''}>Pending</option>
+          <option ${cell.status === 'Covered' ? 'selected' : ''}>Covered</option>
+        </select>
 
-    function updateCell(key, field, value) {
-      if (!rosterData[key]) rosterData[key] = { staff: '', status: 'Vacant', notes: '' };
-      rosterData[key][field] = value;
+        <input value="${cell.notes}" placeholder="Notes" onchange="updateCell('${key}', 'notes', this.value)" />
+      </div>
+    </td>
+  `;
+}
 
-      if (field === 'staff' && value.trim()) rosterData[key].status = 'Covered';
-      if (field === 'staff' && !value.trim()) rosterData[key].status = 'Vacant';
+function quickFillStaff(key) {
+  const staff = document.getElementById('quickStaff').value.trim();
+  if (!staff) return;
+  if (!rosterData[key]) rosterData[key] = { staff: '', status: 'Vacant', notes: '' };
+  rosterData[key].staff = staff;
+  rosterData[key].status = 'Covered';
+  saveRoster();
+  renderRoster();
+}
 
-      saveRoster();
-    }
+function updateCell(key, field, value) {
+  if (!rosterData[key]) rosterData[key] = { staff: '', status: 'Vacant', notes: '' };
+  rosterData[key][field] = value;
 
-    function copyWeekOneToWeekTwo(houseName) {
-      const house = houses.find(h => h.name === houseName);
-      house.shifts.forEach(shift => {
-        for (let i = 0; i < 7; i++) {
-          const weekOneData = { ...getCell(houseName, shift.id, i) };
-          rosterData[cellKey(houseName, shift.id, i + 7)] = { ...weekOneData };
+  if (field === 'staff' && value.trim()) rosterData[key].status = 'Covered';
+  if (field === 'staff' && !value.trim()) rosterData[key].status = 'Vacant';
+
+  saveRoster();
+}
+
+function renderCoverList() {
+  const coverList = document.getElementById('coverList');
+  const coverCount = document.getElementById('coverCount');
+  const items = [];
+
+  houses.forEach(house => {
+    house.shifts.forEach(shift => {
+      fortnightDays.forEach(day => {
+        const cell = getCell(house.name, shift.id, day.index);
+        if (cell.status === 'Vacant' || !cell.staff.trim()) {
+          items.push({
+            house: house.name,
+            week: day.week,
+            day: day.day,
+            date: getDateForDay(day.index),
+            shift: shift.label,
+            time: shift.time,
+            status: cell.status
+          });
         }
       });
-      saveRoster();
-      renderRoster();
+    });
+  });
+
+  coverCount.textContent = items.length;
+
+  if (!items.length) {
+    coverList.innerHTML = '<div class="empty-cover">All shifts are currently covered.</div>';
+    return;
+  }
+
+  coverList.innerHTML = items.map(item => `
+    <div class="cover-item">
+      <strong>${item.house}</strong>
+      <span>${item.week} — ${item.day} ${item.date}</span>
+      <span>${item.shift}: ${item.time}</span>
+      <span>Status: ${item.status}</span>
+    </div>
+  `).join('');
+}
+
+function showTab(tab) {
+  const rosterArea = document.getElementById('rosterArea');
+  const statsPanel = document.getElementById('statsPanel');
+  const coverPanel = document.getElementById('coverPanel');
+  const rosterTab = document.getElementById('rosterTab');
+  const coverTab = document.getElementById('coverTab');
+
+  if (tab === 'cover') {
+    rosterArea.style.display = 'none';
+    statsPanel.style.display = 'none';
+    coverPanel.classList.add('active');
+    coverTab.classList.add('active');
+    rosterTab.classList.remove('active');
+  } else {
+    rosterArea.style.display = 'block';
+    statsPanel.style.display = 'grid';
+    coverPanel.classList.remove('active');
+    rosterTab.classList.add('active');
+    coverTab.classList.remove('active');
+  }
+}
+
+function copyWeekOneToWeekTwo(houseName) {
+  const house = houses.find(h => h.name === houseName);
+  house.shifts.forEach(shift => {
+    for (let i = 0; i < 7; i++) {
+      rosterData[cellKey(houseName, shift.id, i + 7)] = { ...getCell(houseName, shift.id, i) };
     }
+  });
+  saveRoster();
+  renderRoster();
+}
 
-    function copyMondayToFortnight(houseName) {
-      const house = houses.find(h => h.name === houseName);
-      house.shifts.forEach(shift => {
-        const mondayData = { ...getCell(houseName, shift.id, 0) };
-        fortnightDays.forEach(day => {
-          rosterData[cellKey(houseName, shift.id, day.index)] = { ...mondayData };
-        });
-      });
-      saveRoster();
-      renderRoster();
-    }
+function copyMondayToFortnight(houseName) {
+  const house = houses.find(h => h.name === houseName);
+  house.shifts.forEach(shift => {
+    const mondayData = { ...getCell(houseName, shift.id, 0) };
+    fortnightDays.forEach(day => {
+      rosterData[cellKey(houseName, shift.id, day.index)] = { ...mondayData };
+    });
+  });
+  saveRoster();
+  renderRoster();
+}
 
-    function clearHouse(houseName) {
-      Object.keys(rosterData).forEach(key => {
-        if (key.startsWith(`${fortnightStart}_${houseName}_`)) delete rosterData[key];
-      });
-      saveRoster();
-      renderRoster();
-    }
+function clearHouse(houseName) {
+  Object.keys(rosterData).forEach(key => {
+    if (key.startsWith(`${fortnightStart}_${houseName}_`)) delete rosterData[key];
+  });
+  saveRoster();
+  renderRoster();
+}
 
-    function clearRoster() {
-      const confirmClear = confirm('Clear the current fortnight roster?');
-      if (!confirmClear) return;
+function clearRoster() {
+  if (!confirm('Clear the current fortnight roster?')) return;
+  Object.keys(rosterData).forEach(key => {
+    if (key.startsWith(`${fortnightStart}_`)) delete rosterData[key];
+  });
+  saveRoster();
+  renderRoster();
+}
 
-      Object.keys(rosterData).forEach(key => {
-        if (key.startsWith(`${fortnightStart}_`)) delete rosterData[key];
-      });
-      saveRoster();
-      renderRoster();
-    }
+function formatFortnightStart() {
+  return new Date(fortnightStart).toLocaleDateString('en-AU', {
+    weekday: 'long',
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });
+}
 
-    function formatFortnightStart() {
-      return new Date(fortnightStart).toLocaleDateString('en-AU', {
-        weekday: 'long',
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric'
-      });
-    }
+function saveRoster() {
+  localStorage.setItem('fortnightlyHouseRosterData', JSON.stringify(rosterData));
+  localStorage.setItem('fortnightlyHouseRosterStart', fortnightStart);
+}
 
-    function saveRoster() {
-      localStorage.setItem('fortnightlyHouseRosterData', JSON.stringify(rosterData));
-      localStorage.setItem('fortnightlyHouseRosterStart', fortnightStart);
-    }
+function loadRoster() {
+  const savedData = localStorage.getItem('fortnightlyHouseRosterData');
+  const savedStart = localStorage.getItem('fortnightlyHouseRosterStart');
 
-    function loadRoster() {
-      const savedData = localStorage.getItem('fortnightlyHouseRosterData');
-      const savedStart = localStorage.getItem('fortnightlyHouseRosterStart');
+  if (savedData) {
+    try { rosterData = JSON.parse(savedData); }
+    catch { rosterData = {}; }
+  }
 
-      if (savedData) {
-        try {
-          rosterData = JSON.parse(savedData);
-        } catch (error) {
-          rosterData = {};
-        }
-      }
+  if (savedStart) fortnightStart = savedStart;
+}
 
-      if (savedStart) fortnightStart = savedStart;
-    }
-
-    loadRoster();
-    renderRoster();
-  </script>
+loadRoster();
+loadEmployeeDropdowns();
+renderRoster();
+</script>
 </body>
 </html>
